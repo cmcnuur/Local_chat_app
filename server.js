@@ -29,7 +29,9 @@ mongo.connect('mongodb://admin:admin834200@ds249372.mlab.com:49372/mongochat',fu
         console.log('made socket connection.....',socket.id)
         let chat = db.collection('chats');
 
-       
+        app.get('/', function(req, res){
+            res.sendFile(__dirname + '/index.html');
+          });
 
         // Get chats from mongo collection
         chat.find().limit(100).sort({_id:1}).toArray(function(err, res){
