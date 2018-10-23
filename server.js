@@ -17,7 +17,7 @@ app.get('/', function(req, res){
 
 // Connect to mongo
 
-mongo.connect('mongodb://admin:admin834200@ds249372.mlab.com:49372/mongochat',function(err, db){
+mongo.connect('mongodb://admin:admin834200@ds249372.mlab.com:49372/mongochat',function(err, dbs){
     if(err){
         throw err;
     }
@@ -27,7 +27,7 @@ mongo.connect('mongodb://admin:admin834200@ds249372.mlab.com:49372/mongochat',fu
     // Connect to Socket.io
     client.on('connection', function(socket){
         console.log('made socket connection.....',socket.id)
-        let chat = db.collection('chats');
+        let chat = dbs.collection('chatss');
 
         app.get('/', function(req, res){
             res.sendFile(__dirname + '/index.html');
