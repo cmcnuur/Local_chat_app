@@ -12,7 +12,7 @@ const client = socket(server);
 //static file
 //app.use(express.static('public'));
 app.get('/', function(req, res){
-    res.sendFile(__dirname + '/index.html');
+    res.render('public/index.html');
   });
 
 // Connect to mongo
@@ -41,6 +41,7 @@ mongo.connect('mongodb://admin:admin834200@ds249372.mlab.com:49372/mongochat',fu
             socket.emit('output', res);
         });
 
+        
         // Handle input events
         socket.on('input', function(data){
             let name = data.name;
@@ -63,6 +64,7 @@ mongo.connect('mongodb://admin:admin834200@ds249372.mlab.com:49372/mongochat',fu
            
 
         });
+  
 
         socket.on('typing',function(data){
             socket.broadcast.emit('typing',data)
