@@ -2,8 +2,9 @@ var express= require('express');
 var socket=require('socket.io');
 //const mongoose=require('mongoose');
 //app setup
+
 var app=express();
-var server= app.listen(5000,function(){
+var server= app.listen(process.env.PORT || 5000,function(){
     console.log('listening to port 5000');
 });
 
