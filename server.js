@@ -12,7 +12,7 @@ const client = socket(server);
 //static file
 //app.use(express.static('public'));
 app.get('/', function(req, res){
-    res.render('public/index.html');
+    res.sendFile(__dirname + 'index.html');
   });
 
 // Connect to mongo
