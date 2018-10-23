@@ -2,7 +2,6 @@ var express= require('express');
 var socket=require('socket.io');
 //const mongoose=require('mongoose');
 //app setup
-
 var app=express();
 var server= app.listen(process.env.PORT || 5000,function(){
     console.log('listening to port 5000');
@@ -11,10 +10,10 @@ var server= app.listen(process.env.PORT || 5000,function(){
 const mongo = require('mongodb').MongoClient;
 const client = socket(server);
 //static file
-//app.use(express.static('public'));
-app.get('/', function(req, res){
+app.use(express.static('public'));
+/*app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
-  });
+  });*/
 
 // Connect to mongo
 
