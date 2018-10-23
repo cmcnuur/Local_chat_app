@@ -1,0 +1,20 @@
+{
+  "name": "chatapplication",
+  "version": "1.0.0",
+  "description": "chat app using sockets",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Abdullahi Mohamed Abdinur",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "mongodb": "^2.2.30",
+    "mongoose": "^5.3.4",
+    "socket.io": "^2.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  }
+}

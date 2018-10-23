@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <title>MongoChat</title>
+    
+    <style>
+        #messages{height:300px;}
+      #username{color: blue;}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 col-sm-12">
+                <h1 class="text-center">
+                    LocalChat 
+                    <button id="clear" class="btn btn-danger">Clear</button>
+                </h1>
+                <div id="status"></div>
+                <div id="chat">
+                    <input type="text" id="username" class="form-control"  placeholder="Enter name...">
+                    <br>
+                    <div class="card">
+                        <div id="messages" class="card-block">
+                        
+                        </div>
+                        <div id="feedback"></div>
+                    </div>
+                    <br>
+                    <textarea id="textarea" class="form-control" placeholder="Enter message..."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"></script>
+
+    <script>
+        (function(){
+            var element = function(id){
+                return document.getElementById(id);
+            }
+
+            // Get Elements
+            var messages = element('messages');
+            var textarea = element('textarea');
+            var username = element('username');
+            var feedback = element('feedback');
+            var clearBtn = element('clear');
+
+            
+
+            // Connect to socket.io
+            var socket = io.connect('http://127.0.0.1:5000');
+  
+            // Check for connection
+            if(socket !== undefined){
+                console.log('Connected to socket...');
+
+                // Handle Output
+                socket.on('output', function(data){
+                    //console.log(data);
+                    if(data.length){
+                        for(var x = 0;x < data.length;x++){
+                            // Build out message div
+                            var message = document.createElement('div');
+                            message.setAttribute('class', 'chat-message');
+                            feedback.innerHTML="";
+                            textarea.value = "";
+                            message.innerHTML = '<strong style="color:red;">'+data[x].name+': </strong>'+data[x].message;
+                            messages.appendChild(message);
+                           
+                        }
+                    }
+                });
+
+               
+
+                // Handle Input
+                textarea.addEventListener('keydown', function(event){
+                    if(event.which === 13 && event.shiftKey == false){
+                        // Emit to server input
+                        socket.emit('input', {
+                            name:username.value,
+                            message:textarea.value
+                        });
+
+                        event.preventDefault();
+                    }
+                })
+
+                //typing message
+                textarea.addEventListener('keypress', function(){
+                    socket.emit('typing', username.value);
+                });
+
+                socket.on('typing',function(data){
+                    
+                    feedback.innerHTML='<p><em>'+data+ ' is typing a message...</em></p>';
+                   
+                });
+
+                // Handle Chat Clear
+                clearBtn.addEventListener('click', function(){
+                    socket.emit('clear');
+                });
+
+                // Clear Message
+                socket.on('cleared', function(){
+                    messages.textContent = '';
+                });
+            }
+
+        })();
+    </script>
+</body>
+</html>
