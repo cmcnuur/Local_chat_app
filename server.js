@@ -10,10 +10,10 @@ var server= app.listen(process.env.PORT || 5000,function(){
 const mongo = require('mongodb').MongoClient;
 const client = socket(server);
 //static file
-app.use(express.static('public'));
-/*app.get('/', function(req, res){
+//app.use(express.static('public'));
+app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
-  });*/
+  });
 
 // Connect to mongo
 
